@@ -1,0 +1,52 @@
+﻿@model Session
+
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="jumbotron">
+    <p class="lead">
+        Let's see it work!
+    </p>
+    <p>
+        note: the user and session data is reset when the site is started.
+    </p>
+</div>
+
+@if (Model == null)
+{
+    <p>
+        you are not logged in
+    </p>
+    <p>
+        <a href="/User/LogIn" class="btn btn-primary btn-lg">Log In &raquo;</a>
+        <a href="/User/Add" class="btn btn-primary btn-lg">Create Account &raquo;</a>
+    </p>
+}
+else if (Model.NeedsToBeTotpAuthenticated)
+{
+    <p>
+        you are logged in as @Model.User.Name, but you need to authenticate with Google Authenticator.
+    </p>
+    <p>
+        <a href="/User/LogOut" class="btn btn-primary btn-lg">Log Out &raquo;</a>
+        <a href="/TotpAuthentication/Verify" class="btn btn-primary btn-lg">Verify Google Authenticator Code &raquo;</a>
+    </p>
+}
+else
+{
+    <p>
+        you are logged in as @Model.User.Name!
+    </p>
+    <p>
+        <a href="/User/LogOut" class="btn btn-primary btn-lg">Log Out &raquo;</a>
+        @if (Model.User.TotpSecret == null)
+        {
+            <a href="/TotpAuthentication/Enable" class="btn btn-primary btn-lg">Enable Google Authenticator &raquo;</a>
+        }
+        else
+        {
+            <a href="/TotpAuthentication/Disable" class="btn btn-primary btn-lg">Disable Google Authenticator &raquo;</a>
+        }
+    </p>
+}

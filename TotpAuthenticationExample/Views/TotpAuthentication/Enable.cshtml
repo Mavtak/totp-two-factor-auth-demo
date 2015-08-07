@@ -1,0 +1,47 @@
+﻿
+@{
+    ViewBag.Title = "Enable Google Authenticator";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<h3>Step 1: Configure the app</h3>
+
+<p>
+    Open your two-factor authentication app (example: Google Authenticator) and add your account by scanning this QR code:
+</p>
+<p>
+    <div id="qr-code"></div>
+</p>
+
+<script type="text/javascript" src="/Scripts/qrcode.min.js"></script>
+<script type="text/javascript">
+    new QRCode(document.getElementById("qr-code"), {
+        text: "@Html.Raw(ViewBag.BarcodeUrl)",
+        width: 256,
+        height: 256,
+        colorDark: '#000000',
+        colorLight: '#FFFFFF',
+        correctLevel: QRCode.CorrectLevel.H
+    });
+</script>
+
+<p>
+    Alternatively, you can manually type this secret key into the app:
+</p>
+
+<p>
+    @ViewBag.SecretKey
+</p>
+
+<h3>Step 2: Enter the 6-digit code from the app</h3>
+
+<form method="POST">
+    <p>
+        <input type="text" name="code"/>
+    </p>
+    <p>
+        <input type="hidden" name="secretKey" value="@ViewBag.SecretKey"/>
+        <button type="submit">submit</button>
+    </p>
+</form>
